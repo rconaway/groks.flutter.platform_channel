@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/rconaway/groks/flutter/platform_channel/build/app/intermediates/res/merged/debug/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/rconaway/groks/flutter/platform_channel/android/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,109",
+                        "endColumns": "53,53",
+                        "endOffsets": "104,158"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/rconaway/etc/flutter/examples/platform_channel/build/app/intermediates/res/merged/debug/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/rconaway/etc/flutter/examples/platform_channel/android/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,109",
+                        "endColumns": "53,53",
+                        "endOffsets": "104,158"
+                    }
+                }
+            ]
+        }
+    ]
+}
