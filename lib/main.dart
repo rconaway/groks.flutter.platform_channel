@@ -3,14 +3,19 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+const ENDPOINT = "http://ec2-18-216-197-13.us-east-2.compute.amazonaws.com";
 
 class PlatformChannel extends StatefulWidget {
   @override
   _PlatformChannelState createState() => new _PlatformChannelState();
 }
+
+var event_list = <String>[];
 
 class _PlatformChannelState extends State<PlatformChannel> {
   static const MethodChannel methodChannel =
@@ -37,14 +42,15 @@ class _PlatformChannelState extends State<PlatformChannel> {
   @override
   void initState() {
     super.initState();
+
     eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
   }
 
   void _onEvent(Object event) {
     setState(() {
-      _chargingStatus =
-          "Event: $event";
+      event_list.insert(0, event);
     });
+    _uploadbeacondata(event);
   }
 
   void _onError(PlatformException error) {
@@ -55,28 +61,73 @@ class _PlatformChannelState extends State<PlatformChannel> {
 
   @override
   Widget build(BuildContext context) {
-    return new Material(
-      child: new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Text(_batteryLevel, key: const Key('Battery level label')),
-              new Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: new RaisedButton(
-                  child: const Text('Refresh'),
-                  onPressed: _getBatteryLevel,
-                ),
-              ),
-            ],
-          ),
-          new Text(_chargingStatus),
-        ],
+    return new beaconStatus();
+  }
+
+  void _uploadbeacondata(Object event) async {
+    var httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse("$ENDPOINT/api/v1/beacon"))
+    ..headers.contentType = ContentType.JSON;
+    request.write(event.toString());
+    HttpClientResponse response = await request.close();
+    if (response.statusCode != HttpStatus.OK) {
+      event_list.insert(0, 'Failed to send beacon data to backend');
+    }
+  }
+}
+
+class beaconStatus extends StatefulWidget {
+  @override
+  createState() => new beaconState();
+}
+
+class beaconState extends State<beaconStatus> {
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = new ScrollController(
+        initialScrollOffset: 0.0,
+        keepScrollOffset: true
+    );
+  }
+
+  Widget _buildEvents() {
+    return new ListView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16.0),
+        reverse: true,
+        itemBuilder: (context, i) {
+          if (i.isOdd) return new Divider();
+          final index = i ~/ 2;
+          if (index < event_list.length) return _buildRow(event_list[index]);
+          else return _buildRow('');
+        },
+    );
+  }
+
+  Widget _buildRow(String text) {
+    return new ListTile(
+      title: new Text(
+        text,
+        style: _biggerFont,
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('List of events'),
+      ),
+      body: _buildEvents(),
+      );
+  }
+
 }
 
 void main() {

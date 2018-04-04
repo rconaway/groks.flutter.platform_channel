@@ -69,18 +69,18 @@ class BeaconListener(val activity: MainActivity) : SimpleEddystoneListener() {
                 }
                 """
 
-                val endpoint = URL("$ENDPOINT/api/v1/beacon")
-                val connection = endpoint.openConnection() as HttpURLConnection
-                connection.setRequestMethod("POST")
-                connection.setRequestProperty("Content-Type", "application/json")
-                connection.setDoOutput(true)
-                connection.outputStream.write(payload.toByteArray())
+//                val endpoint = URL("$ENDPOINT/api/v1/beacon")
+//                val connection = endpoint.openConnection() as HttpURLConnection
+//                connection.setRequestMethod("POST")
+//                connection.setRequestProperty("Content-Type", "application/json")
+//                connection.setDoOutput(true)
+//                connection.outputStream.write(payload.toByteArray())
 
-                if (connection.responseCode == 200) {
+//                if (connection.responseCode == 200) {
                     say(payload)
-                } else {
-                    say("$action failed (${connection.responseCode}): ${eddystone.key()}")
-                }
+//                } else {
+//                    say("$action failed (${connection.responseCode}): ${eddystone.key()}")
+//                }
 
             }
 
