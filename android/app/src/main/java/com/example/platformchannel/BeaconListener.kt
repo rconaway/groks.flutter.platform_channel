@@ -11,7 +11,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-
 class BeaconListener(val activity: MainActivity) : SimpleEddystoneListener() {
 
     private val ENDPOINT = "http://ec2-18-216-197-13.us-east-2.compute.amazonaws.com"
@@ -43,47 +42,28 @@ class BeaconListener(val activity: MainActivity) : SimpleEddystoneListener() {
 
     private fun say(msg: String) {
         Log.i("Eddy", msg)
-//        activity.runOnUiThread { Toast.makeText(activity, msg, Toast.LENGTH_LONG).show() }
-            activity.eventSink?.success(msg)
-
     }
 
     private fun onMessage(action: String, eddystone: IEddystoneDevice) {
 
-            if (eddystone.instanceId == null) {
-                say("Ignoring null $action")
-                return
-            }
+        if (eddystone.instanceId == null) {
+            say("Ignoring null $action")
+            return
+        }
 
-            AsyncTask.execute {
-                val payload: String = """
-                {
-                    "action": "$action",
-                    "user_id": "$USER_ID",
-                    "namespace": "${eddystone.namespace}",
-                    "beacon_id": "${eddystone.instanceId}",
-                    "distance": "${eddystone.distance}",
-                    "rssi": "${eddystone.rssi}",
-                    "url": "${eddystone.url}",
-                    "txPower": "${eddystone.txPower}"
-                }
-                """
+        val payload = hashMapOf(
+                "action" to "$action",
+                "user_id" to "$USER_ID",
+                "namespace" to "${eddystone.namespace}",
+                "beacon_id" to "${eddystone.instanceId}",
+                "distance" to "${eddystone.distance}",
+                "rssi" to "${eddystone.rssi}",
+                "url" to "${eddystone.url}",
+                "txPower" to "${eddystone.txPower}"
+        )
 
-//                val endpoint = URL("$ENDPOINT/api/v1/beacon")
-//                val connection = endpoint.openConnection() as HttpURLConnection
-//                connection.setRequestMethod("POST")
-//                connection.setRequestProperty("Content-Type", "application/json")
-//                connection.setDoOutput(true)
-//                connection.outputStream.write(payload.toByteArray())
-
-//                if (connection.responseCode == 200) {
-                    say(payload)
-//                } else {
-//                    say("$action failed (${connection.responseCode}): ${eddystone.key()}")
-//                }
-
-            }
-
+        activity.eventSink?.success(payload)
+        say("$action: ${eddystone.namespace}/${eddystone.instanceId}");
     }
 
     fun IEddystoneDevice.key() = "${this.namespace}:${this.instanceId}"

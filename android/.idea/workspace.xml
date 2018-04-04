@@ -55,8 +55,8 @@
       <file leaf-file-name="BeaconListener.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/platformchannel/BeaconListener.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-420">
-              <caret line="16" column="85" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="85" />
+            <state relative-caret-position="597">
+              <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2525,10 +2525,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1025" />
-    <option name="y" value="-1417" />
-    <option name="width" value="1452" />
-    <option name="height" value="1398" />
+    <option name="x" value="741" />
+    <option name="y" value="-1412" />
+    <option name="width" value="1275" />
+    <option name="height" value="1407" />
   </component>
   <component name="ProjectView">
     <navigator currentView="AndroidView" proportions="" version="1">
@@ -2775,7 +2775,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1025" y="-1417" width="1452" height="1398" extended-state="0" />
+    <frame x="741" y="-1412" width="1275" height="1407" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2788,7 +2789,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Flutter Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32847276" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3262195" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2899,8 +2900,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/platformchannel/BeaconListener.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-420">
-          <caret line="16" column="85" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="85" />
+        <state relative-caret-position="597">
+          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
           <folding />
         </state>
       </provider>

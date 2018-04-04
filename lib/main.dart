@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert' show utf8, json;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,9 +49,13 @@ class _PlatformChannelState extends State<PlatformChannel> {
 
   void _onEvent(Object event) {
     setState(() {
-      event_list.insert(0, event);
+      var e = event as Map<String,String>;
+      var msg = '${e["action"]}: ${e["namespace"]}/${e["beacon_id"]}';
+
+      event_list.insert(0, msg);
     });
-    _uploadbeacondata(event);
+
+    _uploadbeacondata(json.encode(event).toString());
   }
 
   void _onError(PlatformException error) {
