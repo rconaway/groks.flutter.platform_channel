@@ -105,23 +105,14 @@ class beaconState extends State<beaconStatus> {
         controller: _scrollController,
         padding: const EdgeInsets.all(16.0),
         reverse: true,
-        itemBuilder: (context, i) {
-          if (i.isOdd) return new Divider();
-          final index = i ~/ 2;
-          if (index < event_list.length) return _buildRow(event_list[index]);
-          else return _buildRow('');
+        itemBuilder: (context, index) {
+          if (index > event_list.length - 1)
+            return null;
+          return new Text(event_list[index]);
         },
     );
   }
 
-  Widget _buildRow(String text) {
-    return new ListTile(
-      title: new Text(
-        text,
-        style: _biggerFont,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
