@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Apr 03 15:45:20 EDT 2018
+#Wed Apr 04 11:36:54 EDT 2018
 4.path=classes.dex
 8.set=ASSET
 6.path=flutter_assets/snapshot_blob.bin
@@ -25,7 +25,7 @@
 7.path=lib/x86/libflutter.so
 6.set=ASSET
 2.base=/Users/rconaway/groks/flutter/platform_channel/build/app/intermediates/transforms/mergeJniLibs/debug/0
-4.base=/Users/rconaway/groks/flutter/platform_channel/build/app/intermediates/transforms/dexMerger/debug/19
+4.base=/Users/rconaway/groks/flutter/platform_channel/build/app/intermediates/transforms/dexMerger/debug/38
 3.baseType=DIRECTORY
 6.base=/Users/rconaway/groks/flutter/platform_channel/build/app/intermediates/assets/debug
 8.base=/Users/rconaway/groks/flutter/platform_channel/build/app/intermediates/assets/debug

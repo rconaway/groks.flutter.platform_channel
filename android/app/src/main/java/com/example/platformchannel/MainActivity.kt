@@ -4,15 +4,26 @@
 
 package com.example.platformchannel
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.widget.Toast
+import com.kontakt.sdk.android.ble.configuration.ScanMode
+import com.kontakt.sdk.android.ble.configuration.ScanPeriod
+import com.kontakt.sdk.android.ble.manager.ProximityManager
+import com.kontakt.sdk.android.ble.manager.ProximityManagerFactory
+import com.kontakt.sdk.android.ble.spec.EddystoneFrameType
+import com.kontakt.sdk.android.common.KontaktSDK
 
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.EventChannel
@@ -23,8 +34,14 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugins.GeneratedPluginRegistrant
+import java.util.*
+
+const private val API_KEY = "ZEegDVjyFnAnInAZYsvZTyjiLHPzltYk"
 
 class MainActivity : FlutterActivity() {
+
+    private var proximityManager: ProximityManager? = null
+    public var eventSink: EventSink? = null
 
     private val batteryLevel: Int
         get() {
@@ -37,21 +54,40 @@ class MainActivity : FlutterActivity() {
             }
         }
 
+    override fun onStart() {
+        super.onStart()
+        startScanning()
+    }
+
+    override fun onStop() {
+        proximityManager!!.stopScanning()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        proximityManager!!.disconnect()
+        proximityManager = null
+        super.onDestroy()
+    }
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestPermissionsIfNecessary()
+        initializeBeaconListener()
         GeneratedPluginRegistrant.registerWith(this)
         EventChannel(flutterView, CHARGING_CHANNEL).setStreamHandler(
                 object : StreamHandler {
                     private var chargingStateChangeReceiver: BroadcastReceiver? = null
                     override fun onListen(arguments: Any?, events: EventSink?) {
-                        chargingStateChangeReceiver = createChargingStateChangeReceiver(events)
-                        registerReceiver(
-                                chargingStateChangeReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+                        eventSink = events // save it for BeaconListener to use
+//                        chargingStateChangeReceiver = createChargingStateChangeReceiver(events)
+//                        registerReceiver(
+//                                chargingStateChangeReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
                     }
 
                     override fun onCancel(arguments: Any?) {
-                        unregisterReceiver(chargingStateChangeReceiver)
-                        chargingStateChangeReceiver = null
+//                        unregisterReceiver(chargingStateChangeReceiver)
+//                        chargingStateChangeReceiver = null
                     }
                 }
         )
@@ -77,13 +113,52 @@ class MainActivity : FlutterActivity() {
                 val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
 
                 if (status == BatteryManager.BATTERY_STATUS_UNKNOWN) {
-                    events!!.error("UNAVAILABLE", "Charging status unavailable", null)
+//                    events!!.error("UNAVAILABLE", "Charging status unavailable", null)
                 } else {
                     val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
-                    events!!.success(if (isCharging) "charging" else "discharging")
+//                    events!!.success(if (isCharging) "charging" else "discharging")
                 }
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+            runOnUiThread { Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show() }
+        } else {
+            runOnUiThread { Toast.makeText(this, "Fail Whale - permission not granted", Toast.LENGTH_SHORT).show() }
+        }
+    }
+
+    private fun startScanning(): Unit {
+        proximityManager = ProximityManagerFactory.create(this)
+        proximityManager!!.configuration()
+                .scanMode(ScanMode.LOW_LATENCY)
+                .scanPeriod(ScanPeriod.RANGING)
+                .eddystoneFrameTypes(Arrays.asList(EddystoneFrameType.UID))
+
+        proximityManager!!.setEddystoneListener(BeaconListener(this))
+        proximityManager!!.connect { proximityManager!!.startScanning() }
+    }
+
+    private fun requestPermissionsIfNecessary(): Unit {
+        val needCoarseLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        val needBluetoothPrivileged = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_PRIVILEGED) != PackageManager.PERMISSION_GRANTED
+
+        if (needCoarseLocation || needBluetoothPrivileged) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_PRIVILEGED), 0)
+        }
+    }
+
+    private fun initializeBeaconListener() {
+        KontaktSDK.initialize(API_KEY)
+        proximityManager = ProximityManagerFactory.create(this)
+        proximityManager!!.configuration()
+                .scanMode(ScanMode.LOW_LATENCY)
+                .scanPeriod(ScanPeriod.RANGING)
+                .eddystoneFrameTypes(Arrays.asList(EddystoneFrameType.UID))
+
+        proximityManager!!.setEddystoneListener(BeaconListener(this))
     }
 
     companion object {

@@ -43,7 +43,7 @@ class _PlatformChannelState extends State<PlatformChannel> {
   void _onEvent(Object event) {
     setState(() {
       _chargingStatus =
-          "Battery status: ${event == 'charging' ? '' : 'dis'}charging.";
+          "Event: $event";
     });
   }
 
