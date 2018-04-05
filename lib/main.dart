@@ -50,7 +50,7 @@ class _PlatformChannelState extends State<PlatformChannel> {
   void _onEvent(Object event) {
     setState(() {
       var e = event as Map<String,String>;
-      var msg = '${e["action"]}: ${e["namespace"]}/${e["beacon_id"]}';
+      var msg = '[${e["action"]}] ${e["namespace"].substring(0,4)}:${e["beacon_id"].substring(0,4)} @${e["rssi"]}';
 
       event_list.insert(0, msg);
     });

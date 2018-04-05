@@ -1,2 +1,6 @@
 build/
-.idea/
+**/.idea/
+**/.gradle/
+.packages
+.flutter-plugins
+
