@@ -3,7 +3,7 @@ name: platform_channel
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_secure_storage: '^2.0.0'
 dev_dependencies:
   flutter_test:
     sdk: flutter
